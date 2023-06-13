@@ -1,12 +1,16 @@
 {
   "name": "@abi-software/simulationvuer",
-  "version": "0.6.5",
+  "version": "0.6.6-beta.0",
   "private": false,
   "scripts": {
     "serve": "vue-cli-service serve --mode static",
     "build": "vue-cli-service build",
     "build-bundle": "vue-cli-service build --target lib --name simulationvuer ./src/components/index.js",
-    "lint": "vue-cli-service lint"
+    "lint": "vue-cli-service lint",
+    "version": "npm run build-bundle",
+    "release:beta": "npm version prerelease --preid=beta; npm publish --tag beta",
+    "release:minor": "npm version minor; npm publish",
+    "release:patch": "npm version patch;  npm publish"
   },
   "dependencies": {
     "@abi-software/plotvuer": "^0.2.46",
