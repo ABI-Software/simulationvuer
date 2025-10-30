@@ -2,7 +2,7 @@
   <div class="simulation-vuer" v-loading="showUserMessage" :element-loading-text="userMessage">
     <p v-if="!hasValidSimulationUiInfo && !showUserMessage" class="default error"><span class="error">Error:</span> {{ errorMessage }}.</p>
     <div class="main" v-if="hasValidSimulationUiInfo">
-      <div class="main-left">
+      <div class="main-left" :class="{'with-buttons': !libopencorSet || uuid}">
         <p class="default name" v-if="!libopencorSet">{{ name }}</p>
         <el-divider v-if="!libopencorSet"></el-divider>
         <p class="default input-parameters">Input parameters</p>
@@ -18,19 +18,21 @@
             :stepValue="input.stepValue"
           />
         </div>
-        <div class="primary-button" v-if="!libopencorSet">
-          <el-button type="primary" size="small" @click="startSimulation()">Run Simulation</el-button>
+        <div class="buttons-container">
+          <div class="primary-button" v-if="!libopencorSet">
+            <el-button type="primary" size="small" @click="startSimulation()">Run Simulation</el-button>
+          </div>
+          <div class="secondary-button" v-if="uuid">
+            <el-button size="small" @click="runOnOsparc()">Run on oSPARC</el-button>
+          </div>
+          <div class="secondary-button" v-if="!libopencorSet">
+            <el-button size="small" @click="viewDataset()">View Dataset</el-button>
+          </div>
+          <div class="secondary-button" v-if="libopencorSet && idType === 'pmr_path'">
+            <el-button size="small" @click="viewWorkspace()">View Workspace</el-button>
+          </div>
+          <p class="default note" v-if="uuid">Additional parameters are available on oSPARC</p>
         </div>
-        <div class="secondary-button" v-if="uuid">
-          <el-button size="small" @click="runOnOsparc()">Run on oSPARC</el-button>
-        </div>
-        <div class="secondary-button" v-if="!libopencorSet">
-          <el-button size="small" @click="viewDataset()">View Dataset</el-button>
-        </div>
-        <div class="secondary-button" v-if="libopencorSet && idType === 'pmr_path'">
-          <el-button size="small" @click="viewWorkspace()">View Workspace</el-button>
-        </div>
-        <p class="default note" v-if="uuid">Additional parameters are available on oSPARC</p>
       </div>
       <div class="main-right" ref="output" v-show="isSimulationValid">
         <PlotVuer v-for="(_outputPlot, index) in simulationUiInfo.output.plots"
@@ -848,8 +850,15 @@ export default {
 
 div.input {
   border: 1px solid #dcdfe6;
-  padding: 4px;
-  height: 300px;
+  padding: 8px;
+  min-height: 0;
+  max-height: none;
+  flex: 0 1 auto;
+  align-self: flex-start;
+}
+
+.buttons-container {
+  flex-shrink: 0;
 }
 
 div.main {
@@ -857,48 +866,57 @@ div.main {
   --mainLeftWidth: 243px;
   grid-template-columns: var(--mainLeftWidth) calc(100% - var(--mainLeftWidth));
   height: 100%;
+  container-type: size;
 }
 
 div.main-left {
   border-right: 1px solid #dcdfe6;
   padding: 12px 20px 12px 12px;
   height: 100%;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  box-sizing: border-box;
+}
+
+div.main-right {
+  height: 100%;
   overflow: auto;
 }
 
-div.main-right.x1 {
+div.main-right.x1 > .plotvuer_parent {
   height: 100%;
 }
 
-div.main-right.x2 {
+div.main-right.x2 > .plotvuer_parent {
   height: 50%;
 }
 
-div.main-right.x3 {
+div.main-right.x3 > .plotvuer_parent {
   height: 33.333%;
 }
 
-div.main-right.x4 {
+div.main-right.x4 > .plotvuer_parent {
   height: 25%;
 }
 
-div.main-right.x5 {
+div.main-right.x5 > .plotvuer_parent {
   height: 20%;
 }
 
-div.main-right.x6 {
+div.main-right.x6 > .plotvuer_parent {
   height: 16.667%;
 }
 
-div.main-right.x7 {
+div.main-right.x7 > .plotvuer_parent {
   height: 14.286%;
 }
 
-div.main-right.x8 {
+div.main-right.x8 > .plotvuer_parent {
   height: 12.5%;
 }
 
-div.main-right.x9 {
+div.main-right.x9 > .plotvuer_parent {
   height: 11.111%;
 }
 
@@ -941,7 +959,8 @@ div.secondary-button .el-button:hover {
 }
 
 div.scrollbar {
-  overflow-y: scroll;
+  overflow-y: auto;
+  overflow-x: hidden;
   scrollbar-width: thin;
 }
 
@@ -994,9 +1013,30 @@ p.name {
 p.note {
   font-size: 12px;
   line-height: 16px;
+  margin-bottom: 0;
 }
 
 span.error {
   font-weight: bold;
+}
+
+@container (height < 400px) {
+  div.main-left.with-buttons {
+    @extend .scrollbar;
+
+    p {
+      font-size: 12px;
+      margin: 8px 0;
+
+      &.name,
+      &.input-parameters {
+        font-size: 14px;
+      }
+    }
+
+    div.input {
+      min-height: 180px;
+    }
+  }
 }
 </style>
