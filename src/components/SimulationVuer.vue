@@ -849,8 +849,11 @@ export default {
 }
 
 div.input {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
   border: 1px solid #dcdfe6;
-  padding: 8px;
+  padding: 12px;
   min-height: 0;
   max-height: none;
   flex: 0 1 auto;
@@ -871,7 +874,7 @@ div.main {
 
 div.main-left {
   border-right: 1px solid #dcdfe6;
-  padding: 12px 20px 12px 12px;
+  padding: 16px;
   height: 100%;
   display: flex;
   flex-direction: column;
@@ -997,7 +1000,7 @@ p.error {
 }
 
 p.input-parameters {
-  margin-bottom: 8px;
+  margin-bottom: 16px;
 }
 
 p.name,
