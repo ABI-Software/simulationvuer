@@ -858,6 +858,8 @@ div.input {
   max-height: none;
   flex: 0 1 auto;
   align-self: flex-start;
+  width: 100%;
+  box-sizing: border-box;
 }
 
 .buttons-container {
