@@ -1,6 +1,6 @@
 {
   "name": "@abi-software/simulationvuer",
-  "version": "2.0.18-demo.3",
+  "version": "2.0.18",
   "private": false,
   "scripts": {
     "serve": "vite serve --host --force",
@@ -17,7 +17,7 @@
     "docs:preview": "vitepress preview docs"
   },
   "dependencies": {
-    "@abi-software/plotvuer": "^1.0.6-demo.1",
+    "@abi-software/plotvuer": "1.0.6",
     "element-plus": "2.8.4",
     "jsonschema": "^1.4.0",
     "mathjs": "^13.0.2",

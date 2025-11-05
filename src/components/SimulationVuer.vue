@@ -1002,7 +1002,7 @@ p.error {
 }
 
 p.input-parameters {
-  margin-bottom: 16px;
+  margin-bottom: 8px;
 }
 
 p.name,
@@ -1028,16 +1028,6 @@ span.error {
 @container (height < 400px) {
   div.main-left.with-buttons {
     @extend .scrollbar;
-
-    p {
-      font-size: 12px;
-      margin: 8px 0;
-
-      &.name,
-      &.input-parameters {
-        font-size: 14px;
-      }
-    }
 
     div.input {
       min-height: 180px;
