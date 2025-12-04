@@ -174,7 +174,6 @@ export default {
   top: 8px;
   right: 8px;
   width: 192px;
-  height: 48px;
   border: 2px dashed #8300bf;
   background-color: #f9f2fc;
   color: #8300bf;
@@ -227,6 +226,7 @@ a {
 
 div.app {
   text-align: center;
+  margin-bottom: 8px;
 }
 
 h3 {
