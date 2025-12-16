@@ -846,4 +846,9 @@ span.error {
     background: white !important;
     color: #8300BF !important;
 }
+
+.p-select-option-label {
+    font-family: Inter, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen, Ubuntu, Cantarell, "Fira Sans", "Droid Sans", "Helvetica Neue", sans-serif;
+    font-size: 0.875rem;
+}
 </style>

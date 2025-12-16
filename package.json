@@ -1,6 +1,6 @@
 {
   "name": "@abi-software/simulationvuer",
-  "version": "3.0.6",
+  "version": "3.0.8",
   "private": false,
   "scripts": {
     "serve": "vite serve --host --force",
@@ -18,7 +18,7 @@
   },
   "dependencies": {
     "@abi-software/plotvuer": "1.0.7",
-    "@opencor/opencor": "^0.20251207.0",
+    "@opencor/opencor": "^0.20251215.0",
     "element-plus": "2.8.4",
     "jsonschema": "^1.4.0",
     "mathjs": "^15.1.0",
