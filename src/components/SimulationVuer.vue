@@ -75,6 +75,17 @@ const IdType = Object.freeze({
   RAW_COMBINE_ARCHIVE: 'raw_combine_archive',
 });
 
+function isWebProtocol(urlString) {
+  try {
+    const url = new URL(urlString);
+    // protocol property includes the colon, e.g., "https:"
+    return url.protocol === "http:" || url.protocol === "https:";
+  } catch (err) {
+    // string was not a valid URL
+    return false;
+  }
+}
+
 /**
  * SimulationVuer
  */
@@ -117,7 +128,7 @@ export default {
       idType = IdType.DATASET_ID;
     } else if (this.id instanceof Uint8Array) {
       idType = IdType.RAW_COMBINE_ARCHIVE;
-    } else if (this.id.startsWith("https://")) {
+    } else if (isWebProtocol(this.id)) {
       idType = IdType.DATASET_URL;
     } else {
       idType = IdType.PMR_PATH;
