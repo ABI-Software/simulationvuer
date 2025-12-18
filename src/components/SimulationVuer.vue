@@ -53,6 +53,65 @@
   </div>
 </template>
 
+<script setup>
+const emit = defineEmits(['data-ready'])
+
+function generateMockSeries(type, length = 100) {
+  const data = []
+  for (let i = 0; i < length; i++) {
+    if (type === 'sine') {
+      // Smooth curve.
+      data.push(Math.sin(i * 0.1) * 10)
+    } else {
+      // Random noise.
+      data.push(Math.random() * 10)
+    }
+  }
+  return data
+}
+
+function getDataView(requests) {
+  if (!requests || !Array.isArray(requests)) {
+    console.error("getDataView: Request must be an array.")
+    return {};
+  }
+
+  const response = {};
+  const EXPECTED_ID = 'nz.ac.auckland.simulation-data-request'
+  const EXPECTED_MAJOR_VERSION = 0;
+
+  requests.forEach((req, index) => {
+    // --- VALIDATION BLOCK ---
+
+    // Check request is expected type.
+    if (req.id !== EXPECTED_ID) {
+      console.warn(`[Mock] Request #${index} ignored: Invalid ID '${req.id}'`)
+      return // Skip this specific item.
+    }
+
+    // Test version compatibility.
+    const requestMajorVersion = parseInt(req.version.split('.')[0])
+    if (requestMajorVersion !== EXPECTED_MAJOR_VERSION) {
+      console.warn(`[Mock] Request #${index} ignored: Version mismatch. Expected v${EXPECTED_MAJOR_VERSION}.x, got v${req.version}`)
+      return // Skip this specific item.
+    }
+
+    // --- MOCK RESPONSE BLOCK ---
+
+    if (req.variable && req.variable.includes('v_in')) {
+      response[req.identifier] = generateMockSeries('sine')
+    } else {
+      // Default fallback for other variables.
+      response[req.identifier] = generateMockSeries('random')
+    }
+  })
+
+  return response
+}
+
+defineExpose({ getDataView })
+</script>
+
 <script>
 import { PlotVuer } from "@abi-software/plotvuer";
 import "@abi-software/plotvuer/dist/style.css";
