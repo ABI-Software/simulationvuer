@@ -53,6 +53,65 @@
   </div>
 </template>
 
+<script setup>
+const emit = defineEmits(['data-ready'])
+
+function generateMockSeries(type, length = 100) {
+  const data = []
+  for (let i = 0; i < length; i++) {
+    if (type === 'sine') {
+      // Smooth curve.
+      data.push(Math.sin(i * 0.1) * 10)
+    } else {
+      // Random noise.
+      data.push(Math.random() * 10)
+    }
+  }
+  return data
+}
+
+function getDataView(requests) {
+  if (!requests || !Array.isArray(requests)) {
+    console.error("getDataView: Request must be an array.")
+    return {};
+  }
+
+  const response = {};
+  const EXPECTED_ID = 'nz.ac.auckland.simulation-data-request'
+  const EXPECTED_MAJOR_VERSION = 0;
+
+  requests.forEach((req, index) => {
+    // --- VALIDATION BLOCK ---
+
+    // Check request is expected type.
+    if (req.id !== EXPECTED_ID) {
+      console.warn(`[Mock] Request #${index} ignored: Invalid ID '${req.id}'`)
+      return // Skip this specific item.
+    }
+
+    // Test version compatibility.
+    const requestMajorVersion = parseInt(req.version.split('.')[0])
+    if (requestMajorVersion !== EXPECTED_MAJOR_VERSION) {
+      console.warn(`[Mock] Request #${index} ignored: Version mismatch. Expected v${EXPECTED_MAJOR_VERSION}.x, got v${req.version}`)
+      return // Skip this specific item.
+    }
+
+    // --- MOCK RESPONSE BLOCK ---
+
+    if (req.variable && req.variable.includes('v_in')) {
+      response[req.identifier] = generateMockSeries('sine')
+    } else {
+      // Default fallback for other variables.
+      response[req.identifier] = generateMockSeries('random')
+    }
+  })
+
+  return response
+}
+
+defineExpose({ getDataView })
+</script>
+
 <script>
 import { PlotVuer } from "@abi-software/plotvuer";
 import "@abi-software/plotvuer/dist/style.css";
@@ -74,6 +133,17 @@ const IdType = Object.freeze({
   PMR_PATH: 'pmr_path',
   RAW_COMBINE_ARCHIVE: 'raw_combine_archive',
 });
+
+function isWebProtocol(urlString) {
+  try {
+    const url = new URL(urlString);
+    // protocol property includes the colon, e.g., "https:"
+    return url.protocol === "http:" || url.protocol === "https:";
+  } catch (err) {
+    // string was not a valid URL
+    return false;
+  }
+}
 
 /**
  * SimulationVuer
@@ -117,7 +187,7 @@ export default {
       idType = IdType.DATASET_ID;
     } else if (this.id instanceof Uint8Array) {
       idType = IdType.RAW_COMBINE_ARCHIVE;
-    } else if (this.id.startsWith("https://")) {
+    } else if (isWebProtocol(this.id)) {
       idType = IdType.DATASET_URL;
     } else {
       idType = IdType.PMR_PATH;
