@@ -78,10 +78,10 @@ const IdType = Object.freeze({
 function isWebProtocol(urlString) {
   try {
     const url = new URL(urlString);
-    // protocol property includes the colon, e.g., "https:"
+    // Protocol property includes the colon, e.g., "https:".
     return url.protocol === "http:" || url.protocol === "https:";
-  } catch (err) {
-    // string was not a valid URL
+  } catch (_err) {
+    // String was not a valid URL.
     return false;
   }
 }
