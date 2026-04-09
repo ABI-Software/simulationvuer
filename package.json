@@ -21,7 +21,7 @@
   },
   "dependencies": {
     "@abi-software/plotvuer": "1.0.7",
-    "@opencor/opencor": "^0.20260318.1",
+    "@opencor/opencor": "^0.20260410.0",
     "element-plus": "2.8.4",
     "jsonschema": "^1.4.0",
     "mathjs": "^15.1.0",
