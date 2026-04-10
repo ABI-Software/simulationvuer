@@ -904,6 +904,10 @@ export default {
   --el-color-primary-light-9: #f3e6f9;
 }
 
+.buttons-container {
+  flex-shrink: 0;
+}
+
 :deep(.el-button:hover) {
   box-shadow: -3px 2px 4px #00000040;
 }
@@ -924,11 +928,21 @@ export default {
   }
 }
 
+.opencor {
+  line-height: 1.5;
+}
+
 :deep(.p-floatlabel:has(input:focus)) label,
 :deep(.p-floatlabel:has(input:-webkit-autofill)) label,
 :deep(.p-floatlabel:has(textarea:focus)) label,
 :deep(.p-floatlabel:has(.p-inputwrapper-focus)) label {
   color: #8300bf;
+}
+
+:deep(.p-inputnumber-button) {
+  background-color: transparent;
+  border: 0;
+  padding: 0;
 }
 
 :deep(.p-inputtext:enabled:focus) {
@@ -947,6 +961,15 @@ export default {
   background-color: #8300bf;
 }
 
+:deep(.pi) {
+  line-height: 20px;
+}
+
+:deep(div.empty-state) > p {
+  margin: 0;
+  line-height: 16px;
+}
+
 div.input {
   display: flex;
   flex-direction: column;
@@ -959,10 +982,6 @@ div.input {
   align-self: flex-start;
   width: 100%;
   box-sizing: border-box;
-}
-
-.buttons-container {
-  flex-shrink: 0;
 }
 
 div.container {
