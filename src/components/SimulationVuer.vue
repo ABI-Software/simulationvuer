@@ -83,6 +83,8 @@
         ref="opencorRef"
         :omex="opencorOmexFile"
         theme="light"
+        @externalData="onExternalData($event)"
+        @file="onFile($event)"
         @simulationData="onSimulationData($event)"
       />
     </div>
@@ -341,6 +343,22 @@ export default {
     },
     /**
      * @public
+     * Add external data to the OpenCOR simulation.
+     * @param `csv` A CSV string or URL for the external data.
+     * @param `voiExpression` Optional VOI expression to map the data.
+     * @param `modelParameters` An array of model parameter identifiers.
+     */
+    addExternalData(csv, voiExpression, modelParameters) {
+      if (!this.$refs.opencorRef?.addExternalData) {
+        return Promise.reject(
+          new Error("SimulationVuer: OpenCOR instance is not available."),
+        );
+      }
+
+      return this.$refs.opencorRef.addExternalData(csv, voiExpression, modelParameters);
+    },
+    /**
+     * @public
      * Remove a data subscription.
      * @param `subscriptionId`
      */
@@ -410,7 +428,24 @@ export default {
     },
     /**
      * @public
-     * Let the outside world know that we have received some simulation data from OpenCOR by emitting a `data-notification` event.
+     * Let the outside world know that we have received some external data from OpenCOR by emitting an `externalData` event.
+     * @param `event`
+     */
+    onExternalData(event) {
+      this.$emit("externalData", event);
+    },
+    /**
+     * @public
+     * Let the outside world know that we have received a file from OpenCOR by emitting a `file` event.
+     * @param `event`
+     */
+    onFile(event) {
+      this.$emit("file", event);
+    },
+    /**
+     * @public
+     * Let the outside world know that we have received some simulation data from OpenCOR by emitting a `simulationData`
+     * event, as well as a `data-notification` event.
      * @param `event`
      */
     onSimulationData(event) {
@@ -455,6 +490,8 @@ export default {
             data,
           },
         });
+
+        this.$emit("simulationData", event);
       });
     },
     /**
