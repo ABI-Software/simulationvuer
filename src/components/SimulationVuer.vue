@@ -341,6 +341,22 @@ export default {
     },
     /**
      * @public
+     * Add external data to the OpenCOR simulation.
+     * @param `csv` A CSV string or URL for the external data.
+     * @param `voiExpression` Optional VOI expression to map the data.
+     * @param `modelParameters` An array of model parameter identifiers.
+     */
+    addExternalData(csv, voiExpression, modelParameters) {
+      if (!this.$refs.opencorRef?.addExternalData) {
+        return Promise.reject(
+          new Error("SimulationVuer: OpenCOR instance is not available."),
+        );
+      }
+
+      return this.$refs.opencorRef.addExternalData(csv, voiExpression, modelParameters);
+    },
+    /**
+     * @public
      * Remove a data subscription.
      * @param `subscriptionId`
      */
