@@ -1,6 +1,6 @@
 {
   "name": "@abi-software/simulationvuer",
-  "version": "3.0.19",
+  "version": "3.0.20",
   "private": false,
   "scripts": {
     "serve": "vite serve --host --force",
