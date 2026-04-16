@@ -490,9 +490,9 @@ export default {
             data,
           },
         });
-
-        this.$emit("simulationData", event);
       });
+
+      this.$emit("simulationData", event);
     },
     /**
      * @public
