@@ -350,12 +350,18 @@ export default {
      */
     addExternalData(csv, voiExpression, modelParameters) {
       if (!this.$refs.opencorRef?.addExternalData) {
-        return Promise.reject(
-          new Error("SimulationVuer: OpenCOR instance is not available."),
+        console.warn(
+          "SimulationVuer: addExternalData: OpenCOR instance is not available.",
         );
+
+        return;
       }
 
-      return this.$refs.opencorRef.addExternalData(csv, voiExpression, modelParameters);
+      return this.$refs.opencorRef.addExternalData(
+        csv,
+        voiExpression,
+        modelParameters,
+      );
     },
     /**
      * @public
