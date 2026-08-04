@@ -23,7 +23,7 @@
     "docs:preview": "vitepress preview docs"
   },
   "dependencies": {
-    "@abi-software/plotvuer": "1.0.7",
+    "@abi-software/plotvuer": "1.1.0",
     "@opencor/opencor": "^0.20260616.0",
     "element-plus": "2.8.4",
     "jsonschema": "^1.4.0",
