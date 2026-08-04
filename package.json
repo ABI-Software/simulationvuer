@@ -1,6 +1,6 @@
 {
   "name": "@abi-software/simulationvuer",
-  "version": "3.2.6",
+  "version": "3.3.0",
   "private": false,
   "engines": {
     "node": ">=20"
