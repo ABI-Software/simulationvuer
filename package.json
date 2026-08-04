@@ -2,6 +2,9 @@
   "name": "@abi-software/simulationvuer",
   "version": "3.2.6",
   "private": false,
+  "engines": {
+    "node": ">=20"
+  },
   "scripts": {
     "serve": "vite serve --host --force",
     "build-bundle": "vite build",
@@ -48,6 +51,11 @@
     "vue-docgen-api": "^4.79.2",
     "vue-router": "^4.2.5",
     "webpack-node-externals": "^2.5.2"
+  },
+  "optionalDependencies": {
+    "@rollup/rollup-darwin-arm64": "4.62.3",
+    "@rollup/rollup-linux-x64-gnu": "4.62.3",
+    "@rollup/rollup-win32-x64-msvc": "4.62.3"
   },
   "eslintConfig": {
     "root": true,
