@@ -46,6 +46,7 @@ cypress.env.json
 
 # Generated files
 **/components.d.ts
+**/auto-imports.d.ts
 
 # OS files
 .DS_Store
