@@ -56,7 +56,7 @@ Note that a simulation will be run on oSPARC if the `id` references a SPARC simu
 
 SimulationVuer uses [@opencor/opencor](https://www.npmjs.com/package/@opencor/opencor), which relies on [libOpenCOR](https://github.com/opencor/libopencor)'s threaded WebAssembly (WASM) to run simulations in the browser. Threaded WASM requires [`SharedArrayBuffer`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/SharedArrayBuffer), which in turn requires the page to be served with **cross-origin isolation** headers.
 
-When deploying an application that uses SimulationVuer, your Web server **must** must send the following headers with the HTML document:
+When deploying an application that uses SimulationVuer, your Web server **must** send the following headers with the HTML document:
 
 ```http
 Cross-Origin-Opener-Policy: same-origin
@@ -64,6 +64,20 @@ Cross-Origin-Embedder-Policy: require-corp
 ```
 
 Without these headers, @opencor/opencor will fail to initialise libOpenCOR and will not function.
+
+### Choosing a `Cross-Origin-Embedder-Policy` value
+
+`Cross-Origin-Embedder-Policy` (COEP) can take one of the following values, each of which affects your application differently:
+
+| Value | Cross-origin isolated? | Effect on the application |
+| --- | --- | --- |
+| `credentialless` (recommended) | Yes | Cross-origin resources (e.g., images, scripts, fonts, iframes from other domains) load even if they don't send a `Cross-Origin-Resource-Policy` header. However, no-cors requests to other origins are sent **without credentials** (cookies, HTTP authentication), so resources that require a logged-in session on another domain may fail or return different content. Not currently supported by Safari, in which case @opencor/opencor will not work. |
+| `require-corp` | Yes | Supported by all modern browsers, including Safari. However, every cross-origin resource **must** either be served with a `Cross-Origin-Resource-Policy: cross-origin` header or be loaded through CORS (e.g., `crossorigin` attribute plus `Access-Control-Allow-Origin` on the server). Any resource that doesn't meet this requirement is blocked, which commonly breaks third-party images, maps, analytics, embedded videos, etc. |
+| `unsafe-none` (default) | No | No restrictions on cross-origin resources, but the page is not cross-origin isolated, so `SharedArrayBuffer` is unavailable and @opencor/opencor will fail to initialise libOpenCOR. |
+
+In short: use `credentialless` if your application embeds third-party resources that you don't control, or `require-corp` if you need Safari support and can ensure that all cross-origin resources send the appropriate headers. Whichever value you choose, `Cross-Origin-Opener-Policy: same-origin` is also required.
+
+### Setting the headers
 
 The exact steps to set these headers depend on your Web server. Here are the steps for Apache:
 
